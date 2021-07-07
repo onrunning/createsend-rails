@@ -1,7 +1,6 @@
 module CreateSendRails
   class SmartEmailFormatter
     def format
-      binding.pry
       request_body.deep_reject! { |_k, v| v.blank? }
     end
 
