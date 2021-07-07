@@ -10,7 +10,6 @@ module CreateSendRails
     end
 
     def deliver!(mail)
-      binding.pry
       @mail = mail
 
       delivery_system == SAILTHRU ? send_via_sailthru : send_via_createsend
@@ -21,7 +20,7 @@ module CreateSendRails
     attr_reader :mail
 
     def sailthru_auth
-      self.settings.dup
+      settings.dup
     end
 
     def send_via_createsend
@@ -55,6 +54,7 @@ module CreateSendRails
 
     def parsed_body
       return if @mail.try(:body).empty?
+
       JSON.parse(@mail.try(:body).try(:raw_source)).symbolize_keys!
     end
   end
