@@ -3,6 +3,13 @@ describe CreateSendRails::Deliverer do
     ActionMailer::Base.create_send_settings = { api_key: 'ABCDEFG' }
   end
 
+  describe 'constants' do
+    it 'validate the constants values' do
+      expect(CreateSendRails::Deliverer::SAILTHRU).to eq('sailthru')
+      expect(CreateSendRails::Deliverer::CREATSEND).to eq('creatsend')
+    end
+  end
+
   describe 'action_mailer' do
     it 'allows configuration settings' do
       expect(ActionMailer::Base.create_send_settings[:api_key]).to eq('ABCDEFG')
@@ -20,6 +27,17 @@ describe CreateSendRails::Deliverer do
       end
 
       xit 'return successfully' do
+         expect(subject).to eq(true)
+      end
+    end
+
+
+    context 'sailthru delivery' do
+      subject { described_class.new(request).deliver!(message) }
+      let(:request) { { api: 'abcdef', delivery_system: 'sailthru' } }
+      let(:message) { double }
+
+      it 'return successfully' do
          expect(subject).to eq(true)
       end
     end
