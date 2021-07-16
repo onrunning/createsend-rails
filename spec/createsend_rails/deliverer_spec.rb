@@ -34,6 +34,7 @@ describe CreateSendRails::Deliverer do
 
     context 'sailthru delivery' do
       let(:request) { { api: 'abcdef', delivery_system: 'sailthru' } }
+      let(:raw_source) { '{ "smart_email_id": "example-id-555", "delivery_system": "sailthru" }' }
       let(:message) { double ( { body: { raw_source: { delivery_system: 'sailthru' } } } ) }
 
       it 'return successfully' do
@@ -43,6 +44,7 @@ describe CreateSendRails::Deliverer do
         expect(message).to receive(:to).and_return(['example.email@example.com'])
         expect(message).to receive(:cc).at_least(:once).and_return(['example_cc_email@example.com'])
         expect(message).to receive(:bcc).at_least(:once).and_return(['example_bcc_email@example.com'])
+        expect(message.body).to receive(:raw_source).at_least(:once).and_return(raw_source)
 
         subject = described_class.new(request).deliver!(message)
         expect(subject).to eq(true)

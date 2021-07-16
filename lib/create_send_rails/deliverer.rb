@@ -55,8 +55,7 @@ module CreateSendRails
     def parsed_body
       return {} unless @mail.try(:body).present?
 
-      raw_source = mail.try(:body).try(:raw_source) || mail.try(:body).try(:[], :raw_source)
-      raw_source.symbolize_keys!
+      JSON.parse(@mail.try(:body).try(:raw_source)).symbolize_keys!
     end
   end
 end
