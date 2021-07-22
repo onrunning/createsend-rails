@@ -19,7 +19,7 @@ module CreateSendRails
 
     attr_reader :mail
 
-    def sailthru_auth
+    def auth
       settings.dup
     end
 
