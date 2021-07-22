@@ -2,6 +2,7 @@ require 'action_mailer'
 require 'create_send_rails/deliverer'
 require 'create_send_rails/ext/action_mailer'
 require 'create_send_rails/ext/hash'
+require 'create_send_rails/sailthru_email_formatter'
 require 'create_send_rails/smart_email_formatter'
 
 module CreateSendRails
