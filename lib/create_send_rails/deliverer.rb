@@ -49,7 +49,7 @@ module CreateSendRails
     end
 
     def mail_data
-      SmartEmailFormatter.new(@mail, parsed_body).format
+      SmartEmailFormatter.new(@mail).format
     end
 
     def parsed_body
