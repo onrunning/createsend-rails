@@ -2,7 +2,7 @@
 describe CreateSendRails::SailthruEmailFormatter do
   let(:message) { double(to: ['a@example.com', 'b@example.com'], 
 												 cc: ['c@example.com', "c2@example.com"],
-												bcc: ['d@example.com', "d2@example.com"]) }
+												 bcc: ['d@example.com', "d2@example.com"]) }
   let(:parsed_body) {
     {
       "smart_email_id": "cbe13bc5-c090-4113-8de6-b8a2ef9edd6e",

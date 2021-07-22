@@ -35,16 +35,17 @@ describe CreateSendRails::Deliverer do
     context 'sailthru delivery' do
       let(:request) { { api: 'abcdef', delivery_system: 'sailthru' } }
       let(:raw_source) { '{ "smart_email_id": "example-id-555", "delivery_system": "sailthru" }' }
-      let(:message) { double ( { body: { raw_source: { delivery_system: 'sailthru' } } } ) }
+      let(:message) { double(to: ['a@example.com', 'b@example.com'], 
+                             cc: ['c@example.com', "c2@example.com"],
+                             bcc: ['d@example.com', "d2@example.com"]) }
+      let(:sailthru_mock_object) { double }
 
       it 'return successfully' do
-        sailthru_mock_objct = double
-        expect_any_instance_of(described_class).to receive(:sailthru_client).and_return(sailthru_mock_objct)
-        expect(sailthru_mock_objct).to receive(:api_post).and_return(true)
-        expect(message).to receive(:to).and_return(['example.email@example.com'])
-        expect(message).to receive(:cc).at_least(:once).and_return(['example_cc_email@example.com'])
-        expect(message).to receive(:bcc).at_least(:once).and_return(['example_bcc_email@example.com'])
-        expect(message.body).to receive(:raw_source).at_least(:once).and_return(raw_source)
+        api_post_data = { email: message.to.join(','), options: { headers: { Cc: message.cc.join(','), Bcc: message.bcc.join(',') } } }
+
+        message.stub_chain(:body, :raw_source).and_return(raw_source)
+        expect_any_instance_of(described_class).to receive(:sailthru_client).and_return(sailthru_mock_object)
+        expect(sailthru_mock_object).to receive(:api_post).with(:send, api_post_data).and_return(true)
 
         subject = described_class.new(request).deliver!(message)
         expect(subject).to eq(true)
